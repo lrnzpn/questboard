@@ -9,13 +9,13 @@ class QuestboardForm(forms.Form):
                           widget= forms.Textarea
                            (attrs={'class':'form-control mb-3'}))
     required_stars = forms.IntegerField(label="Required stars", 
-                                        max_length=40, 
+                                        min_value=1, max_value=40,  
                                         widget= forms.NumberInput
                            (attrs={'class':'form-control mb-3'}))
     
     class Meta:
         model = Questboard
-        fields = "__all__"
+        fields = ['name', 'description', 'required_stars']
         
 class QuestForm(forms.Form):
     name = forms.CharField(label="Quest name",max_length=140,
@@ -24,7 +24,7 @@ class QuestForm(forms.Form):
     description = forms.CharField(label="Description",
                           widget= forms.Textarea
                            (attrs={'class':'form-control mb-3'}))
-    stars = forms.IntegerField(label="Stars", max_length=7, 
+    stars = forms.IntegerField(label="Stars", min_value=1, max_value=7, 
                                widget= forms.NumberInput
                            (attrs={'class':'form-control mb-3'}))
     

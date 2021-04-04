@@ -5,7 +5,22 @@
 <link rel="stylesheet" href="{% static 'css/homepage.css' %}">
 {% endblock stylesheets %}
 
+{% block title %} Home {% endblock %} 
 
 {% block content %}
-<h1>hello</h1>
+<div class="jumbotron">
+    <h1 class="display-4">Welcome to Questboard!</h1>
+    <p class="lead">
+        Create different questboards filled with fun quests to do.
+    </p>
+    <hr class="my-4">
+    <div>
+        <a class="btn btn-primary btn-lg" href="{% url 'new_questboard' %}" role="button">
+            Create Questboard
+        </a>
+        <a class="btn btn-secondary btn-lg" href="{% url 'questboards' %}" role="button">
+            View all Questboards
+        </a>
+    </div>
+  </div>
 {% endblock %}

@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %} Questboard list {% endblock %} 
+
+{% block content %}
+<h3>Questboard list</h3>
+{% if questboards %}
+<ul class="list-group">
+    {% for qb in questboards %}
+    <li class="list-group-item">
+        <div class="row">
+            <div class="col-8">
+                <h4>{{ qb.name }}</h4>
+                <p>
+                    {{ qb.description }}
+                </p>
+            </div>
+            <div class="col-4 d-flex justify-content-end align-items-end">
+                <a href="{% url 'view_questboard' slug=qb.slug %}" class="btn btn-primary">
+                    View questboard
+                </a>
+            </div>
+        </div>
+    </li>
+    
+    {% endfor %}
+  </ul>
+{% else %}
+<h2 class="mb-2">No questboards available</h2>
+<a class="btn btn-primary btn-lg" href="{% url 'new_questboard' %}" role="button">
+    Create a Questboard
+</a>
+{% endif %}
+
+{% endblock %}

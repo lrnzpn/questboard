@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %} New Questboard {% endblock %} 
+
+{% block content %}
+<h3>New Questboard</h3>
+<form method="POST">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn btn-primary">Create</button>
+</form>
+{% endblock %}
