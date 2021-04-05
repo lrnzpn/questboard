@@ -1,0 +1,89 @@
+{% if quests %}
+{% for q in quests %}
+    {% if forloop.first %}<div class="row">{% endif %}
+    <div class="col-md-4">
+        <div class="card mb-4
+        {% if q.stars == 1%}
+        border-info
+        {% elif q.stars == 2 %}
+        border-success
+        {% elif q.stars == 3 %}
+        border-primary
+        {% elif q.stars == 4 %}
+        border-warning
+        {% else %}
+        border-danger
+        {% endif %}" id="{{q.slug}}">
+            <h4 class="card-header text-center text-light
+            {% if q.stars == 1%}
+            bg-info
+            {% elif q.stars == 2 %}
+            bg-success
+            {% elif q.stars == 3 %}
+            bg-primary
+            {% elif q.stars == 4 %}
+            bg-warning
+            {% else %}
+            bg-danger
+            {% endif %}">
+                {{ q.name }}
+            </h4>
+            <div class="card-body">
+                <div class="card-desc-min-height d-flex justify-content-start align-items-center">
+                    <p class="card-text mb-5">
+                        {{ q.description }}
+                    </p>
+                </div>
+                <div class="row card-dibs-min-height">
+                    <div class="col-lg-3">
+                        <b>Dibs</b>
+                    </div>
+                    <div class="col-lg-9">
+                        {% if q.slots %}
+                        <form method="POST">
+                            {% csrf_token %}
+                            {% with ''|center:q.slots as range %}
+                            {% for _ in range %}
+                            <div class="input-group input-group-sm mb-1">
+                                <div class="input-group-prepend">
+                                  <span class="input-group-text">{{forloop.counter}}.</span>
+                                </div>
+                                <input 
+                                name="slot{{forloop.counter}}"
+                                type="text" 
+                                class="form-control form-control-sm" 
+                                id="slot{{forloop.counter}}" />
+                              </div>
+                            
+                            {% endfor %}
+                            {% endwith %}
+                            <button type="submit" class="btn btn-primary btn-sm float-right" name="addSlot" value="addSlot">Submit</button>
+                        </form>
+                        {% else %}
+                        <p class="lead">
+                            All students will participate in this quest
+                        </p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            <div class="card-footer text-center text-warning">
+                <div class="card-text">
+                    {% with ''|center:q.stars as range %}
+                    {% for _ in range %}
+                    <i class="fas fa-star"></i>
+                    {% endfor %}
+                    {% endwith %}
+                </div>
+                <div class="card-text">
+
+                </div>
+            </div>
+        </div>
+    </div>
+    {% if forloop.counter|divisibleby:"3" %}</div><div class="row">{% endif %}
+    {% if forloop.last %}</div>{% endif %}
+{% endfor %}
+{% else %}
+<h1 class="text-center">No quests posted</h1>
+{% endif %}

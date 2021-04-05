@@ -27,7 +27,13 @@ class QuestForm(forms.Form):
     stars = forms.IntegerField(label="Stars", min_value=1, max_value=7, 
                                widget= forms.NumberInput
                            (attrs={'class':'form-control mb-3'}))
-    
+    is_for_everyone = forms.BooleanField(label="Is the quest for everyone? (tick the box if yes):", 
+                                         required=False)
+    slots = forms.IntegerField(label="Number of slots", required=False, 
+                               min_value=0, max_value=7, 
+                               widget= forms.NumberInput
+                           (attrs={'class':'form-control mb-3'}))
+            
     class Meta:
         model = Questboard
-        fields = "__all__"
+        fields = ['name', 'description', 'stars', 'is_for_everyone', 'slots']

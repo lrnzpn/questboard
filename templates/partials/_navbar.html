@@ -1,24 +1,7 @@
 {% load static %}
 
 <nav class="navbar navbar-expand-lg fixed-top navbar-dark bg-dark">
-    <div class="container"> 
-        <a class="navbar-brand" href="/">Questboard</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-  
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav ml-auto">
-        {% with url_name=request.resolver_match.url_name %}
-        <li class="nav-item">
-          <a 
-            class="nav-link {% if url_name == 'homepage' %}active{% endif %}" 
-            href="{% url 'homepage' %}" 
-            >Home</a>
-        </li>
-        
-          {% endwith %}
-      </ul>
+    <div class="container">
+        <a class="navbar-brand" href="/">Questboard!</a>
     </div>
-    </div>
-  </nav>
+</nav>
