@@ -42,6 +42,7 @@ class Quest(models.Model):
 class Slot(models.Model):
     quest = models.ForeignKey(Quest, on_delete=models.CASCADE, null=True)
     student = models.CharField(max_length=255, blank=True, null=True)
+    slot_position = models.IntegerField(blank=True, null=True)
     
     def __str__(self):
         return self.student

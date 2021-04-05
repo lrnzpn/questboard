@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 
 from .forms import QuestboardForm, QuestForm
-from .models import Questboard, Quest
+from .models import Questboard, Quest, Slot
 
 # Create your views here.
 def homepage(response):
@@ -45,6 +45,7 @@ def view_questboard(response, slug):
             qb.required_stars = response.POST.get('required_stars')
             qb.save()
             return redirect('view_questboard', slug=qb.slug)
+        
         elif quest_form.is_valid() and response.POST.get('addQuest'):
             quest = Quest()
             quest.questboard = qb
@@ -56,15 +57,33 @@ def view_questboard(response, slug):
             quest.save()
             return redirect('view_questboard', slug=qb.slug)
         
+        elif response.POST.get('addSlot'):
+            q = Quest.objects.get(id=response.POST.get('quest_id'))
+            print(q)
+            for s in range(1, q.slots):
+                slot = Slot()
+                if response.POST.get(q.slug + '-slot' + str(s)):
+                    slot.quest = q
+                    slot.student = response.POST.get(q.slug + '-slot' + str(s))
+                    slot.slot_position = s
+                    slot.save()
+            
+            return redirect(f'/questboard/{qb.slug}#{q.slug}')
+                
     else:
         quest_form = QuestForm()
         
     quests = Quest.objects.filter(questboard_id=qb.id)
+    slots = []
+    for q in quests:
+        slot = Slot.objects.filter(quest_id=q.id)
+        slots.append({q.id:[{s.slot_position:s.student} for s in slot]})
     
     context = {
         'questboard': qb,
         'quest_form':quest_form,
-        'quests': quests
+        'quests': quests,
+        'slots': slots
     }
     return render(response, "pages/questboard/questboard.html", context)
 

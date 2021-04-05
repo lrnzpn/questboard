@@ -42,22 +42,63 @@
                         {% if q.slots %}
                         <form method="POST">
                             {% csrf_token %}
+                            <input type="hidden" name="quest_id" id="quest_id" value="{{q.id}}">
                             {% with ''|center:q.slots as range %}
                             {% for _ in range %}
-                            <div class="input-group input-group-sm mb-1">
+                            <div class="input-group input-group-sm mb-2">
                                 <div class="input-group-prepend">
                                   <span class="input-group-text">{{forloop.counter}}.</span>
                                 </div>
+                            
                                 <input 
-                                name="slot{{forloop.counter}}"
+                                name="{{q.slug}}-slot{{forloop.counter}}"
                                 type="text" 
                                 class="form-control form-control-sm" 
-                                id="slot{{forloop.counter}}" />
+                                id="{{q.slug}}-slot{{forloop.counter}}" 
+                                {% with counter=forloop.counter %}
+                                {% for slot in slots %}
+                                    {% for item in slot.items %}
+                                        {% if item.0 == q.id%}
+                                            {% for students in item.1 %}
+                                                {% for student in students.items %}
+                                                    {% if student.0 == counter%}
+                                                    value="{{student.1}}" disabled
+                                                    {% endif %}
+                                                {% endfor %}
+                                            {% endfor %}
+                                        {% endif %}
+                                    {% endfor %}
+                                {% endfor %}
+                                {% endwith %}
+                                />
                               </div>
                             
                             {% endfor %}
                             {% endwith %}
-                            <button type="submit" class="btn btn-primary btn-sm float-right" name="addSlot" value="addSlot">Submit</button>
+                            <button type="button" class="btn btn-outline-primary btn-sm float-right mt-2" data-toggle="modal" data-target="#confirmModal{{forloop.counter}}">
+                                Submit
+                            </button>
+  
+                            <div class="modal fade" id="confirmModal{{forloop.counter}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">Confirm slot</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <p class="lead">Are you sure with your quest choice?</p>
+                                        <p class="text-muted"><small>Students cannot retract their dibs once they have confirmed it</small></p>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="submit" class="btn btn-primary" name="addSlot" value="addSlot">Yes</button>
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+                                    </div>
+                                </div>
+                                </div>
+                            </div>
                         </form>
                         {% else %}
                         <p class="lead">
