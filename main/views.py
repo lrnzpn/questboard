@@ -67,8 +67,17 @@ def view_questboard(response, slug):
                     slot.student = response.POST.get(q.slug + '-slot' + str(s))
                     slot.slot_position = s
                     slot.save()
-            
             return redirect(f'/questboard/{qb.slug}#{q.slug}')
+        
+        elif response.POST.get('updateQuest'):
+            q = Quest.objects.get(id=response.POST.get('edit_id'))
+            q.name = response.POST.get('qName_'+str(q.id))
+            q.description = response.POST.get('qDescription_'+str(q.id))
+            q.stars = response.POST.get('qStars_'+str(q.id))
+            q.is_for_everyone = True if response.POST.get('qIsForEveryone_'+str(q.id)) == "on" else False
+            q.slots = response.POST.get('qSlots_'+str(q.id))
+            q.save()
+            return redirect('view_questboard', slug=qb.slug)
                 
     else:
         quest_form = QuestForm()
